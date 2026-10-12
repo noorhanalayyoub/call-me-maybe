@@ -14,3 +14,4 @@
 # Resources
 - [what are LLMs - Video](https://www.youtube.com/watch?v=UgvrrHc5BRY)
 - [what is deep learning - Video]](https://www.youtube.com/watch?v=yAzPUABBkg0)
+- [what does the number of parameters in LLMs indicate[(https://www.youtube.com/watch?v=dPalBLlA5yQ)
