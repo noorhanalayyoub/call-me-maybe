@@ -16,3 +16,4 @@
 - [what is deep learning - Video](https://www.youtube.com/watch?v=yAzPUABBkg0)
 - [what does the number of parameters in LLMs indicate - Video](https://www.youtube.com/watch?v=dPalBLlA5yQ)
 - [Tokenization - Video](https://www.youtube.com/watch?v=bNjVxUDZQfM)
+- [Logits in LLMs - Video](https://www.youtube.com/watch?v=N6I1-RrbBmM)
