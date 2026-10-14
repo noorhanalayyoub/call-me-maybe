@@ -12,6 +12,18 @@
 -  Logits: represents the likelihood of each token appearing next, using a score for each token in the vocabulary, a higher score means a higher likelihood. 
 # Instructions
 
+# Algorithm explanation
+
+# Design decisions
+
+# Performance analysis
+
+# Challenges faced
+
+# Testing strategy
+
+# Example usage
+
 # Resources
 - [what are LLMs - Video](https://www.youtube.com/watch?v=UgvrrHc5BRY)
 - [what is deep learning - Video](https://www.youtube.com/watch?v=yAzPUABBkg0)
