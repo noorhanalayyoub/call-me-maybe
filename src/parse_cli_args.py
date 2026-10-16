@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class parse:
-    def __init(self):
+    def __init__(self):
         self.parser = argparse.ArgumentParser()
         # creating instance of class argumentparser and then calling its method parse_args
         self.parser.add_argument("--functions_definition", default='../data/input/functions_definition.json')
