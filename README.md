@@ -24,6 +24,17 @@
 
 # Example usage
 
+## uv package manager
+- its an extremely fast python package and project manager written in Rust
+- A single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more.
+- its much faster than pip
+## what makes uv a better package manager
+- much faster
+- can maintain a project lockfile
+- creates a virutal environemnt automatically
+- can isntall and manage python versions
+
+
 # Resources
 - [what are LLMs - Video](https://www.youtube.com/watch?v=UgvrrHc5BRY)
 - [what is deep learning - Video](https://www.youtube.com/watch?v=yAzPUABBkg0)
@@ -31,4 +42,4 @@
 - [Tokenization - Video](https://www.youtube.com/watch?v=bNjVxUDZQfM)
 - [Logits in LLMs - Video](https://www.youtube.com/watch?v=N6I1-RrbBmM)
 - [Command Line args parsing in python](https://docs.python.org/3/howto/argparse.html#argparse-tutorial)
-
+- [JSON syntax](https://www.w3schools.com/js/js_json_syntax.asp)
