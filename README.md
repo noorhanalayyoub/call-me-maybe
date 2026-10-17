@@ -34,6 +34,26 @@
 - creates a virutal environemnt automatically
 - can isntall and manage python versions
 
+## try uv
+
+1 - step 1: create a project
+  ```
+    uv init my-project
+    cd my-project
+  ```
+2 - step 2: add a dependency:
+  ```
+    uv add pydantic
+  ```
+
+3 - step 3: match the venv's dependencies to your project's:
+  ```
+    uv sync
+  ```
+4 - step 4: run your script using the project's environment:
+  ```
+    uv run main.py
+  ```
 
 # Resources
 - [what are LLMs - Video](https://www.youtube.com/watch?v=UgvrrHc5BRY)
