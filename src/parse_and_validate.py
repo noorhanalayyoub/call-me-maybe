@@ -8,13 +8,13 @@ class parse:
         self.parser = argparse.ArgumentParser()
         # creating instance of class argumentparser and then calling its method parse_args
         self.parser.add_argument("--functions_definition", default='../data/input/functions_definition.json')
-        self.parser.add_argument("--input", default='../data/input/functions_calls.json')
+        self.parser.add_argument("--input", default='../data/input/function_calling_tests.json')
         self.parser.add_argument("--output", default='../data/output/functions_calls.json')
         self.args = self.parser.parse_args()
         output = Path(self.args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
 
-    def open_files(self):
+    def open_validate(self):
         try:
             with open(self.args.input, 'r') as fd1:
                 json.load(fd1)
