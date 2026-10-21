@@ -9,7 +9,14 @@
 -  LLMs: or large language models, kind of AI thats based on deep learning that tries to predict the next word(token) based on what came before it.
 -  Tokens: the smaller units that your prompt gets transformed into so that the models understands it.
 -  Embedding: representing each token's meaning and its relation to other tokens using a vector. in simpler words taking context into consideration when trying to make sense out of a token.
--  Logits: represents the likelihood of each token appearing next, using a score for each token in the vocabulary, a higher score means a higher likelihood. 
+-  Logits: represents the likelihood of each token appearing next, using a score for each token in the vocabulary, a higher score means a higher likelihood.
+
+## Steps
+the natural flow that the human brain would guess would be something like this : first read JSON input and validate it . move into generation loop by encoding input (turning it into a format that the machine can understand) then start predicting what the next token would be, after guessing the token decode it again and eliminate invalid answers . 
+
+  - encode : turn text into tokens
+  - get logits : return a list with the probability of each token appearing next, index corresponds to token id.
+  - decode : turn token into text
 # Instructions
 
 # Algorithm explanation
