@@ -1,12 +1,12 @@
 import sys
 
 from .answer import Answer
-from .parse_and_validate import parse
+from .parse import Parse
 
 
 def main() -> int:
     try:
-        arg_parser = parse()
+        arg_parser = Parse()
         prompts, definitions = arg_parser.open_validate()
         results = Answer().run(prompts, definitions)
         arg_parser.write_output(results)
@@ -17,4 +17,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

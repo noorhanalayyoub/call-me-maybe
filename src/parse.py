@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 
-class parse:
+class Parse:
     def __init__(self) -> None:
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument(
