@@ -70,3 +70,4 @@ the natural flow that the human brain would guess would be something like this :
 - [Logits in LLMs - Video](https://www.youtube.com/watch?v=N6I1-RrbBmM)
 - [Command Line args parsing in python](https://docs.python.org/3/howto/argparse.html#argparse-tutorial)
 - [JSON syntax](https://www.w3schools.com/js/js_json_syntax.asp)
+- [what is regex](https://medium.com/swlh/understanding-regular-expressions-in-python-21410c64a6f2)
