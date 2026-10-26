@@ -2,6 +2,17 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
+from .validate import validate_definitions, validate_prompts
+
+
+def load_json(path: str) -> Any:
+    try:
+        with open(path, "r", encoding="utf-8") as fd:
+            return json.load(fd)
+    except FileNotFoundError as exc:
+        raise ValueError(f"Input file not found: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid JSON in {path}: {exc}") from exc
 
 
 class Parse:
@@ -21,12 +32,12 @@ class Parse:
         )
         self.args = self.parser.parse_args()
 
-    def open_validate(self) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-        with open(self.args.input, "r") as fd1:
-            prompts = json.load(fd1)
-        with open(self.args.functions_definition, "r") as fd2:
-            definitions = json.load(fd2)
-        return prompts, definitions
+    def open_validate(
+        self,
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        prompts = load_json(self.args.input)
+        definitions = load_json(self.args.functions_definition)
+        return validate_prompts(prompts), validate_definitions(definitions)
 
     def write_output(self, results: list[dict[str, Any]]) -> None:
         output = Path(self.args.output)
