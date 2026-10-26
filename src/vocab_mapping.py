@@ -8,4 +8,4 @@ def vocab_mapping(model: Any) -> tuple[dict[str, int], dict[int, str]]:
         token_to_id: dict[str, int] = json.load(fd)
 
     id_to_token = {token_id: token for token, token_id in token_to_id.items()}
-    return token_to_id, id_to_token
+    return id_to_token
