@@ -1,4 +1,4 @@
-*this activity has been created as part of the 42 curriculum by nalayyou*
+*This activity has been created as part of the 42 curriculum by nalayyou.*
 
 # Description
 
@@ -71,3 +71,4 @@ the natural flow that the human brain would guess would be something like this :
 - [Command Line args parsing in python](https://docs.python.org/3/howto/argparse.html#argparse-tutorial)
 - [JSON syntax](https://www.w3schools.com/js/js_json_syntax.asp)
 - [what is regex](https://medium.com/swlh/understanding-regular-expressions-in-python-21410c64a6f2)
+- [understanding configdict pydantic](https://hamzasajid17.medium.com/understanding-configdict-in-pydantic-with-real-use-cases-0d95852e6288)
