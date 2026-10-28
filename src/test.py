@@ -11,15 +11,15 @@ def answer_checking(model , input_ids, id_to_token):
 
         values =  model.get_logits_from_input_ids(input_ids)
         index =values.index(max(values))
-        temp_answer = answer + id_to_token[index]
+        temp_answer = answer + id_to_token.get(index, "") # look for the index and if it doesnt exist just append ""
 
-        while not any (function.startswith(temp_answer) for function in predefined_functions):
+        while(index not in id_to_token or not any (function.startswith(temp_answer) for function in predefined_functions)):
             values[index] = -inf
             index = values.index(max(values))
             if values[index] == -inf:
                 print("error")
                 return
-            temp_answer = answer + id_to_token[index]
+            temp_answer = answer + id_to_token.get(index, "")
 
         answer = temp_answer
         input_ids.append(index)
@@ -27,7 +27,7 @@ def answer_checking(model , input_ids, id_to_token):
 
 
 model = Small_LLM_Model()
-prompt = "the function for hello is:"
+prompt = "the function for meowing is:"
 id_to_token = vocab_mapping(model)
 input_ids = model.encode(prompt)
 input_ids = input_ids[0].tolist()
