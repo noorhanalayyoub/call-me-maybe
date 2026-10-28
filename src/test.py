@@ -35,6 +35,7 @@ def answer_checking(model , input_ids, id_to_token):
 model = Small_LLM_Model()
 id_to_token = vocab_mapping(model)
 for prompt in prompts:
+    prompt = ( f" request: {prompt} \n pick the best function for this request from the available functions {predefined_functions}\n ouput its name")
     input_ids = model.encode(prompt)[0].tolist()
     ans =  answer_checking(model, input_ids, id_to_token)
     print(ans)
