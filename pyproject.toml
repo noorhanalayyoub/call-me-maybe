@@ -2,7 +2,12 @@
 name = 'call-me-maybe'
 version = '0.0'
 requires-python = '>=3.10'
-dependencies = ['llm_sdk', 'pydantic', 'numpy']
+dependencies = [
+    'llm_sdk',
+    'pydantic',
+    'numpy',
+    "accelerate>=1.15.0",
+]
 
 [tool.uv.sources]
 llm_sdk = { path = "llm_sdk" }

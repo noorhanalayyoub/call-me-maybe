@@ -55,40 +55,13 @@ def build_model(definition: Definition):
 
         params[name] = (python_type, ...)
 
-        return create_model(f"{definition.name.title()}Arguments",__config__=ConfigDict(extra="forbid"), **fields,)
+    return create_model(f"{definition.name.title()}Arguments",__config__=ConfigDict(extra="forbid"), **params,)
 
-def check_generated_call(call: dict, definitions: list[Definition]) -> None:
-    definition_by_name = {definition.name: definition for definition in definitions}
+def check_generated_call(call: dict, argument_models) -> None:
     name = call.get("name")
 
-    if name not in definition_by_name:
+    if name not in argument_models:
         raise ValueError(f"Unknown function: {name!r}")
 
-    argument_model = argument_models[name]
-    argument_model.model_validate(call.get("arguments", {}))
+    argument_models[name].model_validate(call.get("arguments", {}))
 
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--functions_definition",
-        default="data/input/functions_definition.json",
-    )
-    parser.add_argument(
-        "--input",
-        default="data/input/function_calling_tests.json",
-    )
-    args = parser.parse_args()
-
-    definitions = load_def(args.functions_definition)
-    prompts = load_prompts(args.input)
-
-    print(f"Loaded {len(definitions)} function definitions:")
-    for definition in definitions:
-        print(f"- {definition.name}")
-
-    print(f"\nLoaded {len(prompts)} prompts:")
-    for index, item in enumerate(prompts, start=1):
-        print(f"{index}. {item.prompt}")
-main()
