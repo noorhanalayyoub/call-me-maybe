@@ -27,10 +27,10 @@ def answer_checking(model , input_ids, id_to_token):
 
 
 model = Small_LLM_Model()
-prompt = "meow the cat is meowing"
+prompt = "the function for hello is:"
 id_to_token = vocab_mapping(model)
 input_ids = model.encode(prompt)
 input_ids = input_ids[0].tolist()
 ans =  answer_checking(model, input_ids, id_to_token) 
 print(ans)
-
+special_tokens = model._tokenizer.all_special_tokens
