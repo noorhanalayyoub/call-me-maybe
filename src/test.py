@@ -7,8 +7,7 @@ from llm_sdk import Small_LLM_Model
 definitions = load_def("data/input/functions_definition.json")
 predefined_functions = [definition.name for definition in definitions]
 prompts = load_prompts("data/input/function_calling_tests.json")
-for item in prompts:
-    prompt = item.prompt
+prompts = [item.prompt for item in prompts]
 
 def answer_checking(model , input_ids, id_to_token):
     answer = "" 
