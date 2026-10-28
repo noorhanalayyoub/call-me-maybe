@@ -1,8 +1,15 @@
+from models import load_def, load_prompts
 from math import inf
 from vocab_mapping import vocab_mapping
 from llm_sdk import Small_LLM_Model
 
-predefined_functions = ["fn_meow", "hello", "nuni"]
+
+definitions = load_def("data/input/functions_definition.json")
+predefined_functions = [definition.name for definition in definitions]
+prompts = load_prompts("data/input/function_calling_tests.json")
+for item in prompts:
+    prompt = item.prompt
+
 def answer_checking(model , input_ids, id_to_token):
     answer = "" 
     for _ in range(30):
@@ -27,10 +34,9 @@ def answer_checking(model , input_ids, id_to_token):
 
 
 model = Small_LLM_Model()
-prompt = "the function for meowing is:"
 id_to_token = vocab_mapping(model)
-input_ids = model.encode(prompt)
-input_ids = input_ids[0].tolist()
-ans =  answer_checking(model, input_ids, id_to_token) 
-print(ans)
+for prompt in prompts:
+    input_ids = model.encode(prompt)[0].tolist()
+    ans =  answer_checking(model, input_ids, id_to_token)
+    print(ans)
 special_tokens = model._tokenizer.all_special_tokens
