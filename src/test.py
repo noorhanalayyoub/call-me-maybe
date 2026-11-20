@@ -119,10 +119,96 @@ def fill_numeric_params(model, base_text, definition, nv, id_to_token):
 
     return values
 
+def build_string_vocab(token_to_id):
+    content, closers = set(), set()
+    for tok, tid in token_to_id.items():
+        text = tok.replace("Ġ", " ")
+        if not text:
+            continue
+        if text[0] == '"':
+            closers.add(tid)          # tokens that start a closing quote
+        elif '"' in text or "\\" in text or any(c in text for c in "Ċĉč"):
+            continue                  # would break the JSON string
+        else:
+            content.add(tid)
+    return {"content": content, "closers": closers}
+
+
+def generate_string(model, input_ids, sv, max_len=40):
+    chosen = []
+    for _ in range(max_len):
+        logits = model.get_logits_from_input_ids(input_ids)
+        best_content = max(sv["content"], key=lambda t: logits[t])
+        best_close = max(sv["closers"], key=lambda t: logits[t])
+
+        if logits[best_close] > logits[best_content]:
+            break                     # the model wants to end the string
+
+        chosen.append(best_content)
+        input_ids.append(best_content)
+
+    return model.decode(chosen) if chosen else ""
+
+def generate_boolean(model, input_ids, token_to_id, id_to_token):
+    options = ["true", "false"]
+    text = ""
+    while text not in options:
+        logits = model.get_logits_from_input_ids(input_ids)
+        allowed = []
+        for word in options:
+            if not word.startswith(text):
+                continue
+            remaining = word[len(text):]
+            for length in range(1, len(remaining) + 1):
+                tid = token_to_id.get(remaining[:length])
+                if tid is not None:
+                    allowed.append(tid)
+
+        if not allowed:
+            raise ValueError("cannot continue boolean")
+
+        best = max(allowed, key=lambda t: logits[t])
+        text += id_to_token[best]
+        input_ids.append(best)
+
+    return text == "true"
+
+def fill_params(model, base_text, definition, nv, sv,
+                token_to_id, id_to_token):
+    text = base_text + "{"
+    values = {}
+
+    for i, (name, param) in enumerate(definition.parameters.items()):
+        text += ("" if i == 0 else ", ") + json.dumps(name) + ": "
+
+        if param.type == "string":
+            text += '"'
+        elif param.type not in ("integer", "number", "boolean"):
+            raise NotImplementedError(param.type)
+
+        ids = model.encode(text)[0].tolist()
+
+        if param.type in ("integer", "number"):
+            raw = generate_number(model, ids, nv, id_to_token,
+                                  is_int=(param.type == "integer"))
+            value = int(raw) if param.type == "integer" else float(raw)
+            text += raw
+        elif param.type == "string":
+            value = generate_string(model, ids, sv)
+            text += json.dumps(value, ensure_ascii=False)[1:]
+        else:
+            value = generate_boolean(model, ids, token_to_id, id_to_token)
+            text += "true" if value else "false"
+
+        values[name] = value
+
+    return values
+
 
 model = Small_LLM_Model()
 token_to_id, id_to_token = vocab_mapping(model)
 nv = build_number_vocab(token_to_id)
+sv = build_string_vocab(token_to_id)
 
 for prompt in prompts:
     full_prompt = build_prompt(prompt, definitions)
@@ -137,14 +223,11 @@ for prompt in prompts:
     base_text = full_prompt + name + "\nArguments as JSON:\n"
 
     try:
-        params = fill_numeric_params(
-            model, base_text, definition, nv, id_to_token
-        )
-    except NotImplementedError as e:
-        print(f"{prompt!r}: {name} has a {e} parameter, not supported yet")
-        continue
-    except ValueError as e:
+        params = fill_params(model, base_text, definition, nv, sv,
+                             token_to_id, id_to_token)
+    except (NotImplementedError, ValueError) as e:
         print(f"{prompt!r}: {name} failed: {e}")
         continue
 
     print(f"{prompt!r} -> {name} {params}")
+
