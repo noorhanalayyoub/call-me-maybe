@@ -3,6 +3,7 @@ from math import inf
 from vocab_mapping import vocab_mapping
 from llm_sdk import Small_LLM_Model
 import re
+import json
 
 
 definitions = load_def("data/input/functions_definition.json")
