@@ -33,17 +33,33 @@ def answer_checking(model , input_ids, id_to_token, token_to_id):
             print("error")
             return None
         index = max(allowed_tokens, key=lambda token_id: values[token_id])
-        answer = answer+ id_to_token[index]
+        answer = answer + id_to_token[index]
         input_ids.append(index)
 
     return answer if answer in predefined_functions else None
+
+
+def build_prompt(user_prompt, functions_defs):
+    lines = [
+        "You pick the function that best answers a request.",
+        "Available functions:",
+    ]
+
+    for d in functions_defs:
+        params = ", ".join(f"{n}: {p.type}" for n, p in d.parameters.items())
+        lines.append(f"- {d.name}({params}): {d.description}")
+    lines.append("")
+    lines.append(f"Request: {user_prompt}")
+    lines.append("Function to call:")
+    return "\n".join(lines) + "\n"
+
 
 model = Small_LLM_Model()
 token_to_id , id_to_token = vocab_mapping(model)
 
 token_to_id, id_to_token = vocab_mapping(model)
 for prompt in prompts:
-    prompt = ( f" request: {prompt} \n pick the best function for this request from the available functions {predefined_functions}\n ouput its name")
-    input_ids = model.encode(prompt)[0].tolist()
+    new_prompt = build_prompt(prompt,definitions)
+    input_ids = model.encode(new_prompt)[0].tolist()
     ans =  answer_checking(model, input_ids, id_to_token, token_to_id)
     print(ans)
